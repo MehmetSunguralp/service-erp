@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { RolesGuard } from './auth/roles.guard';
 
 @Module({
   imports: [
@@ -23,7 +26,7 @@ import { PrismaService } from '../prisma/prisma.service';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [PrismaService],
+  providers: [PrismaService, { provide: APP_GUARD, useClass: RolesGuard }],
   exports: [PrismaService],
 })
 export class AppModule {}

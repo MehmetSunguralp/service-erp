@@ -18,6 +18,10 @@ export class UserService {
     profilePic?: string;
   }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    const existing = await prisma.user.findUnique({ where: { email: data.email } });
+    if (existing) throw new Error('User already exists');
+
     return prisma.user.create({
       data: {
         email: data.email,

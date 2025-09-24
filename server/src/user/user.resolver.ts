@@ -3,8 +3,10 @@ import { User } from './user.model';
 import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Roles } from 'src/auth/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -14,12 +16,13 @@ export class UserResolver {
   ) {}
 
   @Query(() => [User])
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async users() {
     return this.userService.findAll();
   }
 
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Query(() => User)
   async me(@Context() context) {
     const userId = context.req.user.id;
