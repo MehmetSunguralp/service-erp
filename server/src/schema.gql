@@ -6,6 +6,7 @@ type User {
   id: Int!
   email: String!
   name: String!
+  role: String!
   profilePic: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -23,7 +24,7 @@ type Query {
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
-  register(email: String!, name: String!, password: String!): User!
+  register(email: String!, name: String!, password: String!): String!
   login(email: String!, password: String!): String!
 }
 
@@ -31,5 +32,6 @@ input CreateUserInput {
   email: String!
   name: String!
   password: String!
+  role: String!
   profilePic: String
 }

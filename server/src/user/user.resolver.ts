@@ -22,7 +22,7 @@ export class UserResolver {
   @UseGuards(GqlAuthGuard)
   @Query(() => User)
   async me(@Context() context) {
-    const userId = context.req.user.id; // JwtStrategy'deki "id"
+    const userId = context.req.user.id;
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
 

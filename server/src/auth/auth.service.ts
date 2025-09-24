@@ -11,10 +11,15 @@ export class AuthService {
 
   async register(email: string, name: string, password: string) {
     const hashed = await bcrypt.hash(password, 10);
+
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) throw new Error('User already exists');
+
     const user = await prisma.user.create({
-      data: { email, name, password: hashed },
+      data: { email, name, password: hashed, role: 'USER' },
     });
-    return user;
+
+    return this.login(user);
   }
 
   async validateUser(email: string, password: string) {
@@ -25,7 +30,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: { id: number; email: string }) {
+  async login(user: { id: string; email: string }) {
     const payload = { sub: user.id, email: user.email };
     return { access_token: this.jwtService.sign(payload) };
   }

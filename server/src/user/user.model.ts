@@ -11,6 +11,9 @@ export class User {
   @Field()
   name: string;
 
+  @Field()
+  role: string;
+
   @Field({ nullable: true })
   profilePic?: string;
 

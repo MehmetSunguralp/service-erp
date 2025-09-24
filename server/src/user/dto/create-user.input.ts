@@ -11,6 +11,9 @@ export class CreateUserInput {
   @Field()
   password: string;
 
+  @Field()
+  role: 'ADMIN' | 'MODERATOR' | 'USER';
+
   @Field({ nullable: true })
   profilePic?: string;
 }

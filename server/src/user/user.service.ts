@@ -10,13 +10,20 @@ export class UserService {
     return prisma.user.findMany();
   }
 
-  async createUser(data: { email: string; name: string; password: string; profilePic?: string }) {
+  async createUser(data: {
+    email: string;
+    name: string;
+    password: string;
+    role: 'ADMIN' | 'MODERATOR' | 'USER';
+    profilePic?: string;
+  }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     return prisma.user.create({
       data: {
         email: data.email,
         name: data.name,
         password: hashedPassword,
+        role: data.role,
         profilePic: data.profilePic,
       },
     });
