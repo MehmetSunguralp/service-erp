@@ -9,14 +9,14 @@ const prisma = new PrismaClient();
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async register(email: string, name: string, password: string) {
+  async register(email: string, name: string, password: string, profilePic?: string) {
     const hashed = await bcrypt.hash(password, 10);
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) throw new Error('User already exists');
 
     const user = await prisma.user.create({
-      data: { email, name, password: hashed, role: 'USER' },
+      data: { email, name, password: hashed, role: 'USER', profilePic: profilePic ?? null },
     });
 
     return this.login(user);

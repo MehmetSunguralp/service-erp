@@ -6,8 +6,13 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => String)
-  async register(@Args('email') email: string, @Args('name') name: string, @Args('password') password: string) {
-    const token = await this.authService.register(email, name, password);
+  async register(
+    @Args('email') email: string,
+    @Args('name') name: string,
+    @Args('password') password: string,
+    @Args('profilePic', { nullable: true }) profilePic?: string,
+  ) {
+    const token = await this.authService.register(email, name, password, profilePic);
     return token.access_token;
   }
 
