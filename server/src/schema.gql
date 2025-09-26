@@ -10,12 +10,18 @@ type User {
   profilePic: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  isVerified: Boolean!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type RegisterResponse {
+  message: String!
+  email: String!
+}
 
 type Query {
   users: [User!]!
@@ -24,8 +30,9 @@ type Query {
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
-  register(email: String!, name: String!, password: String!, profilePic: String): String!
+  register(email: String!, name: String!, password: String!, profilePic: String): RegisterResponse!
   login(email: String!, password: String!): String!
+  verifyUser(email: String!, code: String!): String!
 }
 
 input CreateUserInput {

@@ -22,4 +22,7 @@ export class User {
 
   @Field()
   updatedAt: Date;
+
+  @Field()
+  isVerified: boolean;
 }
